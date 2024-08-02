@@ -9,7 +9,8 @@ import (
 
 func main() {
 	url := "https://api.artifactsmmo.com/my/DaGuile/action/fight"
-	var bearer = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhZGVidHNpbXVsYXRvciIsInBhc3N3b3JkX2NoYW5nZWQiOiIifQ.c7hgfF8UzfyIZ-ppQyYH-AMMlJw5uUIrBOhWSMDMjCw"
+	// yes yes this has been changed
+	var bearer = "Bearer " + "insertToken"
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
 		log.Println("Error trying to make post request")
