@@ -162,10 +162,16 @@ type CombatResponse struct {
 }
 
 func ParseCombatLog(rawLog []byte) {
-	// snippet only
 	var result CombatResponse
 	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
-	fmt.Println(result)
+	if result.Data.Character.Name == "" {
+		fmt.Println("Can't Attack")
+	}
+	fmt.Println(result.Data.Character.Name)
+	for _, rec := range result.Data.Fight.Logs {
+		fmt.Println(rec)
+	}
+
 }
