@@ -4,6 +4,7 @@ import (
 	parse "artifactMMO/logParsers"
 	menus "artifactMMO/menuMaps"
 	"bufio"
+	"bytes"
 	"fmt"
 	"io"
 	"log"
@@ -20,38 +21,15 @@ func main() {
 func Run() {
 	var running int = 1
 	var character string = ""
-	actionPost := menus.ActionResponse{
-		Url:     "",
-		PostGet: "",
-		Data:    "",
-	}
-	reader := bufio.NewReader(os.Stdin)
 
 	for running == 1 {
+
 		// Print Character list
-		fmt.Println(menus.GetCharacterMenu())
-
-		// Call the reader to read user's input
-		key, err := reader.ReadString('\n')
-		if err != nil {
-			panic(err)
-		}
-		key = strings.TrimSpace(key)
-		character = menus.GetCharacter(key)
-		fmt.Println(menus.GetActionsMenu())
-
-		// Call the reader to read user's input
-		key2, err := reader.ReadString('\n')
-		if err != nil {
-			panic(err)
-		}
-		key2 = strings.TrimSpace(key2)
-		actionPost = menus.GetAction(key2, character)
-
-		var bearer = "Bearer " + "PlaceHolder"
-		if err != nil {
-			fmt.Println("Can't marshal jsonvalue: ", actionPost.Data)
-		}
+		var bearer = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhZGVidHNpbXVsYXRvciIsInBhc3N3b3JkX2NoYW5nZWQiOiIyMDI0LTA4LTAyIDE1OjAzOjIxLjM3MzUzNCJ9.gcnIvBLjqesqXVBQ6zSr78ELK6B-trsjDWRtCr-DgPg"
+		fmt.Println(menus.GetCharactersMenu())
+		character = HandleCharacterStep()
+		keyPressed := HandleActionChoice(character)
+		actionPost := menus.ActionOperator(keyPressed, character)
 
 		client := &http.Client{}
 		req := HttpReqBuilder(actionPost, bearer)
@@ -64,20 +42,57 @@ func Run() {
 		if err != nil {
 			log.Println("Error while reading the response bytes:", err)
 		}
-		parse.ParseOperator(key2, body)
+		parse.ParseOperator(keyPressed, body, character)
 	}
 }
 
 func HttpReqBuilder(action menus.ActionResponse, bearer string) *http.Request {
-	payload := strings.NewReader("{\n  \"x\": 0,\n  \"y\": 0\n}")
-	req, err := http.NewRequest(action.PostGet, action.Url, payload)
-	fmt.Println(action)
-	if err != nil {
-		fmt.Println("Fail build request with json")
-		fmt.Println(err)
+	var jsonStr = []byte(action.Data)
+	byteStr := bytes.NewBuffer(jsonStr)
+	if len(jsonStr) == 0 {
+		req, err := http.NewRequest(action.PostGet, action.Url, nil)
+		if err != nil {
+			fmt.Println("Fail build request with json")
+			fmt.Println(err)
+		}
+		req.Header.Add("Accept", "application/json")
+		req.Header.Add("Authorization", bearer)
+		return req
+	} else {
+		req, err := http.NewRequest(action.PostGet, action.Url, byteStr)
+		if err != nil {
+			fmt.Println("Fail build request with json")
+			fmt.Println(err)
+		}
+		req.Header.Add("Content-Type", "application/json")
+		req.Header.Add("Accept", "application/json")
+		req.Header.Add("Authorization", bearer)
+		return req
 	}
-	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Accept", "application/json")
-	req.Header.Add("Authorization", bearer)
-	return req
+}
+
+func HandleCharacterStep() string {
+	// Call the reader to read user's input
+	reader := bufio.NewReader(os.Stdin)
+	key, err := reader.ReadString('\n')
+	if err != nil {
+		panic(err)
+	}
+	if len(strings.TrimSpace(key)) > 0 {
+		key = strings.TrimSpace(key)
+		char := menus.CharacterOperator(key)
+		return char
+	} else {
+		return HandleCharacterStep()
+	}
+}
+
+func HandleActionChoice(char string) string {
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println(menus.ActionMenuOperator(char))
+	key2, err := reader.ReadString('\n')
+	if err != nil {
+		panic(err)
+	}
+	return strings.TrimSpace(key2)
 }
