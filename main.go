@@ -25,7 +25,7 @@ func Run() {
 	for running == 1 {
 
 		// Print Character list
-		var bearer = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhZGVidHNpbXVsYXRvciIsInBhc3N3b3JkX2NoYW5nZWQiOiIyMDI0LTA4LTAyIDE1OjAzOjIxLjM3MzUzNCJ9.gcnIvBLjqesqXVBQ6zSr78ELK6B-trsjDWRtCr-DgPg"
+		var bearer = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhZGVidHNpbXVsYXRvciIsInBhc3N3b3JkX2NoYW5nZWQiOiIyMDI0LTA4LTA2IDIzOjUyOjQ1LjI2Mjg2NiJ9.t9BDau2hFiQ1xRpWtGBk2wS9IDTL-zBqy7BIEfURmkc"
 		fmt.Println(menus.GetCharactersMenu())
 		character = HandleCharacterStep()
 		keyPressed := HandleActionChoice(character)
@@ -34,6 +34,8 @@ func Run() {
 		client := &http.Client{}
 		req := HttpReqBuilder(actionPost, bearer)
 		resp, err := client.Do(req)
+		fmt.Println("req: ", actionPost)
+		fmt.Println("response: ", resp)
 		if err != nil {
 			log.Println("Error on response.\nERROR] -", err)
 		}
