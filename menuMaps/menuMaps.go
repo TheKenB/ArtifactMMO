@@ -33,6 +33,8 @@ func CharacterActionMenu() string {
 [1] Attack
 [2] Cooldown
 [3] Unequip
+[4] Gather
+[5] Craft
 ---------------------`
 }
 
@@ -68,11 +70,15 @@ func GetCharacterAction(val string, char string) {
 	case "0":
 		api.Move(char, val)
 	case "1":
-		api.Attack(char, val)
+		api.Fight(char, val)
 	case "2":
-		api.GetCharacters(char, val)
+		api.GetMyCharacters(char, val)
 	case "3":
 		api.UnequipItem(char, val)
+	case "4":
+		api.Gathering(char, val)
+	case "5":
+		api.Crafting(char, val)
 	default:
 		fmt.Println("No Action")
 	}

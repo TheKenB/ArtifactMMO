@@ -39,13 +39,13 @@ func Move(char string, key string) {
 	parse.ParseOperator(key, body, char)
 }
 
-func Attack(char string, key string) {
+func Fight(char string, key string) {
 	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/my/" + char + "/action/fight", PostGet: "POST", Data: ""}
 	body := ExecQuery(resp)
 	parse.ParseOperator(key, body, char)
 }
 
-func GetCharacters(char string, key string) {
+func GetMyCharacters(char string, key string) {
 	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/my/characters", PostGet: "GET", Data: ""}
 	body := ExecQuery(resp)
 	parse.ParseOperator(key, body, char)
@@ -72,6 +72,29 @@ func UnequipItem(char string, key string) {
 	parse.ParseOperator(key, body, char)
 }
 
+func Gathering(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/DaGuile/action/gathering"
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func Crafting(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/crafting"
+	var item string
+	var quantity string
+	fmt.Println("Enter item and quantity")
+	_, err := fmt.Scan(&item, &quantity)
+	if err != nil {
+		fmt.Println("Crafting Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	fmt.Println(body)
+}
+
+// Helpers
 func ItemSlot() string {
 	slot := ""
 	fmt.Println(`

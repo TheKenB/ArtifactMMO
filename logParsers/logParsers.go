@@ -4,6 +4,7 @@ import (
 	response "artifactMMO/responseType"
 	"encoding/json"
 	"fmt"
+	"strconv"
 )
 
 func ParseOperator(val string, rawLog []byte, character string) {
@@ -25,6 +26,8 @@ func CharacterParseOperator(val string, rawLog []byte) {
 		ParseCooldown(rawLog)
 	case "3":
 		ParseUnequip(rawLog)
+	case "4":
+		ParseGather(rawLog)
 	default:
 		fmt.Println("Some Action Taken")
 	}
@@ -87,4 +90,38 @@ func ParseUnequip(rawLog []byte) {
 	}
 
 	fmt.Println("Unequiped")
+}
+
+func ParseGather(rawLog []byte) {
+	var result response.GatherResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Gather")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Gathering")
+	fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
+	// Looks like nothing is returned currently
+	for _, rec := range result.Data.Details.Items {
+		fmt.Println("Resource: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	}
+}
+
+func ParseCraft(rawLog []byte) {
+	var result response.GatherResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Craft")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Crafting")
+	fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
+	// Looks like nothing is returned currently
+	for _, rec := range result.Data.Details.Items {
+		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	}
 }
