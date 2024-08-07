@@ -2,7 +2,13 @@ package responseType
 
 import "time"
 
-type JsonCharacter struct {
+type ActionResponse struct {
+	Url     string
+	PostGet string
+	Data    string
+}
+
+type JsonCharacterResponse struct {
 	Name                      string    `json:"name"`
 	Skin                      string    `json:"skin"`
 	Level                     int       `json:"level"`
@@ -15,21 +21,21 @@ type JsonCharacter struct {
 	Mining_xp                 int       `json:"mining_xp"`
 	Mining_max_xp             int       `json:"mining_max_xp"`
 	Woodcutting_level         int       `json:"woodcutting_level"`
-	Woodcutting_xp            int       `json:"woodcutting_xp"`
-	Woodcutting_max_xp        int       `json:"woodcutting_max_xp"`
-	Fishing_level             int       `json:"fishing_level"`
-	Fishing_xp                int       `json:"fishing_xp"`
-	Fishing_max_xp            int       `json:"fishing_max_xp"`
-	Weaponcrafting_level      int       `json:"weaponcrafting_level"`
-	Weaponcrafting_xp         int       `json:"weaponcrafting_xp"`
-	Weaponcrafting_max_xp     int       `json:"weaponcrafting_max_xp"`
-	Gearcrafting_level        int       `json:"gearcrafting_level"`
-	Gearcrafting_xp           int       `json:"gearcrafting_xp"`
-	Gearcrafting_max_xp       int       `json:"gearcrafting_max_xp"`
-	Jewelrycrafting_level     int       `json:"jewelrycrafting_level"`
-	Jewelrycrafting_xp        int       `json:"jewelrycrafting_xp"`
-	Jewelrycrafting_max_xp    int       `json:"jewelrycrafting_max_xp"`
-	Cooking_level             int       `json:"cooking_level"`
+	Woodcutting_xp            int       `JSON:"WOODCUTTING_XP"`
+	Woodcutting_max_xp        int       `JSON:"WOODCUTTING_MAX_XP"`
+	Fishing_level             int       `JSON:"FISHING_LEVEL"`
+	Fishing_xp                int       `JSON:"FISHING_XP"`
+	Fishing_max_xp            int       `JSON:"FISHING_MAX_XP"`
+	Weaponcrafting_level      int       `JSON:"WEAPONCRAFTING_LEVEL"`
+	Weaponcrafting_xp         int       `JSON:"WEAPONCRAFTING_XP"`
+	Weaponcrafting_max_xp     int       `JSON:"WEAPONCRAFTING_MAX_XP"`
+	Gearcrafting_level        int       `JSON:"GEARCRAFTING_LEVEL"`
+	Gearcrafting_xp           int       `JSON:"GEARCRAFTING_XP"`
+	Gearcrafting_max_xp       int       `JSON:"GEARCRAFTING_MAX_XP"`
+	Jewelrycrafting_level     int       `JSON:"JEWELRYCRAFTING_LEVEL"`
+	Jewelrycrafting_xp        int       `JSON:"JEWELRYCRAFTING_XP"`
+	Jewelrycrafting_max_xp    int       `JSON:"JEWELRYCRAFTING_MAX_XP"`
+	Cooking_level             int       `JSON:"COOKING_LEVEL"`
 	Cooking_xp                int       `json:"cooking_xp"`
 	Cooking_max_xp            int       `json:"cooking_max_xp"`
 	Hp                        int       `json:"hp"`
@@ -80,17 +86,7 @@ type JsonCharacter struct {
 	} `json:"inventory"`
 }
 
-// type CooldownMap struct {
-// 	Total_seconds     float32   `json:"total_seconds"`
-// 	Remaining_seconds float32   `json:"remaining_seconds"`
-// 	TotalSeconds      float32   `json:"totalSeconds"`
-// 	RemainingSeconds  float32   `json:"remainingSeconds"`
-// 	StartedAt         time.Time `json:"started_at"`
-// 	Expiration        time.Time `jsong:"experation"`
-// 	Reason            string    `json:"reason"`
-// }
-
-type CooldownMap struct {
+type CooldownMapResponse struct {
 	Total_seconds     float32   `json:"total_seconds"`
 	Remaining_seconds float32   `json:"remaining_seconds"`
 	StartedAt         time.Time `json:"started_at"`
@@ -98,7 +94,7 @@ type CooldownMap struct {
 	Reason            string    `json:"reason"`
 }
 
-type ItemMap struct {
+type ItemMapResponse struct {
 	Name        string `json:"name"`
 	Code        string `json:"code"`
 	Level       int    `json:"level"`
@@ -122,8 +118,8 @@ type ItemMap struct {
 
 type CombatResponse struct {
 	Data struct {
-		CooldownMap `json:"cooldown"`
-		Fight       struct {
+		CooldownMapResponse `json:"cooldown"`
+		Fight               struct {
 			Xp    int `json:"xp"`
 			Gold  int `json:"gold"`
 			Drops []struct {
@@ -148,7 +144,7 @@ type CombatResponse struct {
 			Logs   []string `json:"logs"`
 			Result string   `json:"result"`
 		} `json:"fight"`
-		Character JsonCharacter `json:"Character"`
+		Character JsonCharacterResponse `json:"Character"`
 	} `json:"data"`
 }
 
@@ -169,15 +165,48 @@ type AllMapsResponse struct {
 	Pages int `json:"pages"`
 }
 
+type DropResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `json:"quantity"`
+}
+
+type BlockedHitsResponse struct {
+	Fire  int `json:"fire"`
+	Earth int `json:"earth"`
+	Water int `json:"water"`
+	Air   int `json:"air"`
+	Total int `json:"total"`
+}
+
+type FightResponse struct {
+	Xp             int                 `json:"xp"`
+	Gold           int                 `json:"gold"`
+	Drops          []DropResponse      `json:"drops"`
+	Turns          int                 `json:"turns"`
+	MonsterBlocked BlockedHitsResponse `json:"monster_blocked_hits"`
+	PlayerBlocked  BlockedHitsResponse `json:"player_blocked_hits"`
+	Logs           []string            `json:"logs"`
+	Result         string              `json:"result"`
+}
+
 type GetMyCharactersResponse struct {
-	Data []JsonCharacter `json:"data"`
+	Data []JsonCharacterResponse `json:"data"`
 }
 
 type EquipingResponse struct {
 	Data struct {
-		Cooldown CooldownMap `json:"cooldown"`
-		Slot     string      `json:"slot"`
-		Item     ItemMap     `json:"item"`
+		Cooldown CooldownMapResponse `json:"cooldown"`
+		Slot     string              `json:"slot"`
+		Item     ItemMapResponse     `json:"item"`
 	} `json:"data"`
-	Character JsonCharacter `json:"character"`
+	Character JsonCharacterResponse `json:"character"`
+}
+
+type ItemsResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `jsong:"quantity"`
+}
+
+type GatherDetails struct {
+	Xp int `json:"xp"`
 }
