@@ -93,19 +93,41 @@ type CooldownMapResponse struct {
 	Expiration        time.Time `jsong:"experation"`
 	Reason            string    `json:"reason"`
 }
+type EffectsResponse struct {
+	Name  string `json:"name"`
+	Value int    `json:"value"`
+}
+
+type ItemsResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `json:"quantity"`
+}
+
+type CraftResponse struct {
+	Skill    string          `json:"skill"`
+	Level    int             `json:"level"`
+	Items    []ItemsResponse `json:"items"`
+	Quantity int             `json:"quantity"`
+}
+
+type BankResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `json:"quantity"`
+}
+
+type BankGoldResponse struct {
+	Quantity int `json:"quantity"`
+}
 
 type ItemMapResponse struct {
-	Name        string `json:"name"`
-	Code        string `json:"code"`
-	Level       int    `json:"level"`
-	Type        string `json:"type"`
-	Subtype     string `json:"subtype"`
-	Description string `json:"description"`
-	Effects     []struct {
-		Name  string `json:"name"`
-		Value int    `json:"value"`
-	} `json:"effect"`
-	Craft struct {
+	Name        string            `json:"name"`
+	Code        string            `json:"code"`
+	Level       int               `json:"level"`
+	Type        string            `json:"type"`
+	Subtype     string            `json:"subtype"`
+	Description string            `json:"description"`
+	Effects     []EffectsResponse `json:"effect"`
+	Craft       struct {
 		Skill string `json:"skill"`
 		Level int    `json:"level"`
 		Items []struct {
@@ -202,11 +224,43 @@ type EquipingResponse struct {
 	Character JsonCharacterResponse `json:"character"`
 }
 
-type ItemsResponse struct {
-	Code     string `json:"code"`
-	Quantity int    `jsong:"quantity"`
+type GatherDetailsResponse struct {
+	Xp int `json:"xp"`
 }
 
-type GatherDetails struct {
-	Xp int `json:"xp"`
+type RecycleDetailResponse struct {
+	Details struct {
+		Items []ItemsResponse `json:"items"`
+	} `json:"details"`
+}
+
+type TransactionResponse struct {
+	Code       string `json:"code"`
+	Quantity   int    `json:"quantity"`
+	Price      int    `json:"price"`
+	TotalPrice int    `json:"total_price"`
+}
+
+type TaskResponse struct {
+	Code  string `json:"code"`
+	Type  string `json:"type"`
+	Total int    `json:"total"`
+}
+
+type RewardResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `json:"quantity"`
+}
+
+type AllCharacters struct {
+	Data []struct {
+		Character          string    `json:"character"`
+		Account            string    `json:"account"`
+		Type               string    `json:"type"`
+		Description        string    `json:"description"`
+		Content            string    `json:"content"`
+		Cooldown           int       `json:"cooldown"`
+		CooldownExpiration time.Time `json:"cooldown_expiration"`
+		CreateAt           time.Time `json:"created_at"`
+	}
 }
