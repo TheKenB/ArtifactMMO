@@ -306,3 +306,20 @@ type RecyclingResponse struct {
 		Character JsonCharacterResponse `json:"character"`
 	}
 }
+
+type BankWithdrawResponse struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Item      ItemMapResponse       `json:"item"`
+		Bank      []BankResponse        `json:"bank"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type BankWithdrawGoldResponse struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Bank      BankGoldResponse      `json:"bank"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}

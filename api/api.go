@@ -106,13 +106,13 @@ func DepositBank(char string, key string) {
 	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
 	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
 	body := ExecQuery(resp)
-	parse.ParseDepositBank(body)
+	parse.ParseOperator(key, body, char)
 }
 
 func DepositBankGold(char string, key string) {
 	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/bank/deposit/gold"
 	var gold string
-	fmt.Println("Enter gold quantity")
+	fmt.Println("Enter gold quantity deposit")
 	_, err := fmt.Scan(&gold)
 	if err != nil {
 		fmt.Println("Bank Deposit Error:", err)
@@ -120,7 +120,7 @@ func DepositBankGold(char string, key string) {
 	data := `{"quantity":` + gold + `}`
 	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
 	body := ExecQuery(resp)
-	parse.ParseDepositBankGold(body)
+	parse.ParseOperator(key, body, char)
 }
 
 func Recycling(char string, key string) {
@@ -135,7 +135,36 @@ func Recycling(char string, key string) {
 	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
 	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
 	body := ExecQuery(resp)
-	parse.ParseDepositBank(body)
+	parse.ParseOperator(key, body, char)
+}
+
+func WithdrawBank(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/bank/withdraw"
+	var item string
+	var quantity string
+	fmt.Println("Enter item and quantity")
+	_, err := fmt.Scan(&item, &quantity)
+	if err != nil {
+		fmt.Println("Bank Withdraw Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func WithdrawBankGold(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/bank/withdraw/gold"
+	var gold string
+	fmt.Println("Enter gold quantity to withdraw")
+	_, err := fmt.Scan(&gold)
+	if err != nil {
+		fmt.Println("Bank Deposit Error:", err)
+	}
+	data := `{"quantity":` + gold + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
 }
 
 // Helpers

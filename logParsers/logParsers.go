@@ -32,6 +32,14 @@ func CharacterParseOperator(val string, rawLog []byte) {
 		ParseCraft(rawLog)
 	case "6":
 		ParseDepositBank(rawLog)
+	case "7":
+		ParseDepositBankGold(rawLog)
+	case "8":
+		ParseRecyling(rawLog)
+	case "9":
+		ParseWithdrawBank(rawLog)
+	case "10":
+		ParseWithdrawBankGold(rawLog)
 	default:
 		fmt.Println("Some Action Taken")
 	}
@@ -146,7 +154,7 @@ func ParseDepositBank(rawLog []byte) {
 }
 
 func ParseDepositBankGold(rawLog []byte) {
-	var result response.BankDepositResponse
+	var result response.BankDepositGoldResponse
 	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
@@ -155,9 +163,7 @@ func ParseDepositBankGold(rawLog []byte) {
 	}
 
 	fmt.Println(result.Data.Character.Name + " Depositing")
-	for _, rec := range result.Data.Bank {
-		fmt.Println("Gold: " + strconv.Itoa(rec.Quantity))
-	}
+	fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
 }
 
 func ParseRecyling(rawLog []byte) {
@@ -173,4 +179,33 @@ func ParseRecyling(rawLog []byte) {
 	for _, rec := range result.Data.Details.Items {
 		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
 	}
+}
+
+func ParseWithdrawBank(rawLog []byte) {
+	var result response.BankWithdrawResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Bank Deposit")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Withdrawing")
+	for _, rec := range result.Data.Bank {
+		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	}
+}
+
+func ParseWithdrawBankGold(rawLog []byte) {
+	var result response.BankWithdrawGoldResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Bank Gold Deposit")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Withdrawing Gold")
+	fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
+	fmt.Println(result)
 }

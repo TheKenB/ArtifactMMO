@@ -29,14 +29,17 @@ func GetCharactersMenu() string {
 func CharacterActionMenu() string {
 	return `
 ---------------------
-[0] Walk
-[1] Attack
-[2] Cooldown
-[3] Unequip
-[4] Gather
-[5] Craft
-[6] Bank Deposit
-[7] Bank Deposit Gold
+[0]    Walk
+[1]    Attack
+[2]    Cooldown
+[3]    Unequip
+[4]    Gather
+[5]    Craft
+[6]    Bank Deposit
+[7]    Bank Deposit Gold
+[8]    Recycle Item
+[9]    Withdraw From Bank
+[10]   Withdraw Bank Gold
 ---------------------`
 }
 
@@ -85,6 +88,12 @@ func GetCharacterAction(val string, char string) {
 		api.DepositBank(char, val)
 	case "7":
 		api.DepositBankGold(char, val)
+	case "8":
+		api.DepositBankGold(char, val)
+	case "9":
+		api.WithdrawBank(char, val)
+	case "10":
+		api.WithdrawBankGold(char, val)
 	default:
 		fmt.Println("No Action")
 	}
