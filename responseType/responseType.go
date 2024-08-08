@@ -388,3 +388,20 @@ type AllCharacterLogs struct {
 	Size  int `json:"size"`
 	Pages int `json:"pages"`
 }
+
+type GetBankItems struct {
+	Data []struct {
+		Code     string `json:"code"`
+		Quantity int    `json:"quantity"`
+	} `json:"data"`
+	Total int `json:"total"`
+	Page  int `json:"page"`
+	Size  int `json:"size"`
+	Pages int `json:"pages"`
+}
+
+type GetBankGold struct {
+	Data struct {
+		Quantity string `json:"quantity"`
+	}
+}

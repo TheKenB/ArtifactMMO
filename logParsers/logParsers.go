@@ -321,3 +321,29 @@ func ParseAllCharacterLog(rawLog []byte) {
 		}
 	}
 }
+
+func ParseGetBankItems(rawLog []byte) {
+	var result response.GetBankItems
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	}
+	if len(result.Data) == 0 {
+		fmt.Println("Can't get bank items")
+	} else {
+		for _, rec := range result.Data {
+			fmt.Println("Item: " + rec.Code + " Quantity:" + strconv.Itoa(rec.Quantity))
+		}
+	}
+}
+
+func ParseGetBankGold(rawLog []byte) {
+	var result response.GetBankGold
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	}
+	if result.Data.Quantity == "0" {
+		fmt.Println("Can't get gold from bank")
+	} else {
+		fmt.Println("Withdrawed: " + result.Data.Quantity)
+	}
+}

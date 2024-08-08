@@ -9,7 +9,7 @@ import (
 	"net/http"
 )
 
-var bearer = "Bearer " + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImRhZGVidHNpbXVsYXRvciIsInBhc3N3b3JkX2NoYW5nZWQiOiIyMDI0LTA4LTA2IDIzOjUyOjQ1LjI2Mjg2NiJ9.t9BDau2hFiQ1xRpWtGBk2wS9IDTL-zBqy7BIEfURmkc"
+var bearer = "Bearer " + GetToken()
 
 func HttpReqBuilder(action response.ActionResponse, bearer string) *http.Request {
 	var jsonStr = []byte(action.Data)

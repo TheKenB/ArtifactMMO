@@ -253,6 +253,28 @@ func GetAllCharLogs(key string) {
 	parse.ParseOperator(key, body, "None")
 }
 
+func GetBankItems(key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/bank/items"
+	var itemCode string
+	var page string
+	var size string
+	fmt.Println("Enter itemCode page size")
+	_, err := fmt.Scan(&itemCode, &page, &size)
+	if err != nil {
+		fmt.Println("Can't find Bank Items")
+	}
+	data := `{"item_code":` + `"` + itemCode + `"` + `,"page":` + page + `"` + `,"size":` + size + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, "None")
+}
+
+func GetBankGold(key string) {
+	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/my/bank/gold", PostGet: "GET", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, "None")
+}
+
 // Helpers
 func ItemSlot() string {
 	slot := ""

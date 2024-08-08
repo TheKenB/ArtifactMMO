@@ -54,6 +54,8 @@ func NoCharacterActionMenu() string {
 [0] Locations
 [1] Get All Character Logs
 [2] Get Character List
+[3] Get Bank Items
+[4] Get Bank Gold
 ---------------------`
 }
 
@@ -124,6 +126,10 @@ func GetNoCharacterAction(val string, char string) {
 		api.GetAllCharLogs(val)
 	case "2":
 		api.GetMyCharacters(val)
+	case "3":
+		api.GetBankItems(val)
+	case "4":
+		api.GetBankGold(val)
 	default:
 		fmt.Println("No Actin")
 	}
