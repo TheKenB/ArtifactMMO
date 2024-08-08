@@ -31,7 +31,6 @@ func CharacterActionMenu() string {
 ---------------------
 [0]    Walk
 [1]    Attack
-[2]    Cooldown
 [3]    Unequip
 [4]    Gather
 [5]    Craft
@@ -40,6 +39,12 @@ func CharacterActionMenu() string {
 [8]    Recycle Item
 [9]    Withdraw From Bank
 [10]   Withdraw Bank Gold
+[11]   Ge Buy Item
+[12]   Ge Sell Item
+[13]   Accept New Task
+[14]   Complete Task
+[15]   Exchange Task
+[16]   Delete Item
 ---------------------`
 }
 
@@ -47,6 +52,8 @@ func NoCharacterActionMenu() string {
 	return `
 ---------------------
 [0] Locations
+[1] Get All Character Logs
+[2] Get Character List
 ---------------------`
 }
 
@@ -76,8 +83,6 @@ func GetCharacterAction(val string, char string) {
 		api.Move(char, val)
 	case "1":
 		api.Fight(char, val)
-	case "2":
-		api.GetMyCharacters(char, val)
 	case "3":
 		api.UnequipItem(char, val)
 	case "4":
@@ -94,6 +99,18 @@ func GetCharacterAction(val string, char string) {
 		api.WithdrawBank(char, val)
 	case "10":
 		api.WithdrawBankGold(char, val)
+	case "11":
+		api.GeBuyItem(char, val)
+	case "12":
+		api.GeSellItem(char, val)
+	case "13":
+		api.AcceptNewTask(char, val)
+	case "14":
+		api.CompleteTask(char, val)
+	case "15":
+		api.ExchangeTask(char, val)
+	case "16":
+		api.DeleteItem(char, val)
 	default:
 		fmt.Println("No Action")
 	}
@@ -103,6 +120,10 @@ func GetNoCharacterAction(val string, char string) {
 	switch val {
 	case "0":
 		api.GetAllMaps(val)
+	case "1":
+		api.GetAllCharLogs(val)
+	case "2":
+		api.GetMyCharacters(val)
 	default:
 		fmt.Println("No Actin")
 	}

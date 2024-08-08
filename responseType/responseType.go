@@ -98,11 +98,6 @@ type EffectsResponse struct {
 	Value int    `json:"value"`
 }
 
-type ItemsResponse struct {
-	Code     string `json:"code"`
-	Quantity int    `json:"quantity"`
-}
-
 type CraftMapResponse struct {
 	Skill    string          `json:"skill"`
 	Level    int             `json:"level"`
@@ -117,6 +112,11 @@ type BankResponse struct {
 
 type BankGoldResponse struct {
 	Quantity int `json:"quantity"`
+}
+
+type ItemsResponse struct {
+	Code     string `json:"code"`
+	Quantity int    `json:"quantity"`
 }
 
 type ItemMapResponse struct {
@@ -322,4 +322,69 @@ type BankWithdrawGoldResponse struct {
 		Bank      BankGoldResponse      `json:"bank"`
 		Character JsonCharacterResponse `json:"character"`
 	}
+}
+
+type GeBuyItem struct {
+	Data struct {
+		Cooldown    CooldownMapResponse   `json:"cooldown"`
+		Transaction TransactionResponse   `json:"transaction"`
+		Character   JsonCharacterResponse `json:"character"`
+	}
+}
+
+type GeSellItem struct {
+	Data struct {
+		Cooldown    CooldownMapResponse   `json:"cooldown"`
+		Transaction TransactionResponse   `json:"transaction"`
+		Character   JsonCharacterResponse `json:"character"`
+	}
+}
+
+type AcceptNewTask struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Task      TaskResponse          `json:"task"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type CompleteTask struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Reward    RewardResponse        `json:"task"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type ExchangeTask struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Reward    RewardResponse        `json:"reward"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type DeleteItem struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Item      ItemsResponse         `json:"item"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type AllCharacterLogs struct {
+	Data []struct {
+		Character          string    `json:"character"`
+		Account            string    `json:"account"`
+		Type               string    `json:"type"`
+		Description        string    `json:"description"`
+		Content            string    `json:"context"`
+		Cooldown           int       `json:"cooldown"`
+		CooldownExpiration time.Time `json:"cooldown_expiration"`
+		CreatedAt          time.Time `json:"created_at"`
+	}
+	Total int `json:"total"`
+	Page  int `json:"page"`
+	Size  int `json:"size"`
+	Pages int `json:"pages"`
 }

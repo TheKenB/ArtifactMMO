@@ -40,8 +40,6 @@ func ExecQuery(actionPost response.ActionResponse) []byte {
 	client := &http.Client{}
 	req := HttpReqBuilder(actionPost, bearer)
 	resp, err := client.Do(req)
-	fmt.Println("req: ", actionPost)
-	fmt.Println("response: ", resp)
 	if err != nil {
 		log.Println("Error on response.\nERROR] -", err)
 	}

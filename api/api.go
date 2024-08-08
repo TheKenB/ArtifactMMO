@@ -45,24 +45,6 @@ func Fight(char string, key string) {
 	parse.ParseOperator(key, body, char)
 }
 
-func GetMyCharacters(char string, key string) {
-	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/my/characters", PostGet: "GET", Data: ""}
-	body := ExecQuery(resp)
-	parse.ParseOperator(key, body, char)
-}
-
-func GetAllMaps(key string) {
-	var page string
-	fmt.Println("Enter page number")
-	_, err := fmt.Scan(&page)
-	if err != nil {
-		fmt.Println("X,Y Error:", err)
-	}
-	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/maps/?page=" + page + "&size=100", PostGet: "GET", Data: ""}
-	body := ExecQuery(resp)
-	parse.ParseOperator(key, body, "None")
-}
-
 func UnequipItem(char string, key string) {
 	slot := ItemSlot()
 	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/unequip"
@@ -165,6 +147,110 @@ func WithdrawBankGold(char string, key string) {
 	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
 	body := ExecQuery(resp)
 	parse.ParseOperator(key, body, char)
+}
+
+func GeBuyItem(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/ge/buy"
+	var item string
+	var quantity string
+	var price string
+	fmt.Println("Enter item, quantity, price")
+	_, err := fmt.Scan(&item, &quantity, &price)
+	if err != nil {
+		fmt.Println("Ge Item Buy Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `,"price":` + price + `}`
+	fmt.Println(data)
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func GeSellItem(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/ge/sell"
+	var item string
+	var quantity string
+	var price string
+	fmt.Println("Enter item, quantity, price")
+	_, err := fmt.Scan(&item, &quantity, &price)
+	if err != nil {
+		fmt.Println("Ge Item Buy Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `,"price":` + price + `}`
+	fmt.Println(data)
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func AcceptNewTask(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/task/new"
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func CompleteTask(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/task/complete"
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func ExchangeTask(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/task/exchange"
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+func DeleteItem(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/delete"
+	var item string
+	var quantity string
+	fmt.Println("Enter item and quantity")
+	_, err := fmt.Scan(&item, &quantity)
+	if err != nil {
+		fmt.Println("Delete Item Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, char)
+}
+
+// Character agnostic
+func GetAllMaps(key string) {
+	var page string
+	fmt.Println("Enter page number")
+	_, err := fmt.Scan(&page)
+	if err != nil {
+		fmt.Println("X,Y Error:", err)
+	}
+	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/maps/?page=" + page + "&size=100", PostGet: "GET", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, "None")
+}
+
+func GetMyCharacters(key string) {
+	resp := response.ActionResponse{Url: "https://api.artifactsmmo.com/my/characters", PostGet: "GET", Data: ""}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, "None")
+}
+
+func GetAllCharLogs(key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/logs"
+	var page string
+	var size string
+	fmt.Println("Enter page and page size")
+	_, err := fmt.Scan(&page, &size)
+	if err != nil {
+		fmt.Println("Get Character Logs Error:", err)
+	}
+	data := `{"page":` + `"` + page + `"` + `,"size":` + size + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseOperator(key, body, "None")
 }
 
 // Helpers

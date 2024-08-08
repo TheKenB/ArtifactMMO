@@ -19,11 +19,9 @@ func ParseOperator(val string, rawLog []byte, character string) {
 func CharacterParseOperator(val string, rawLog []byte) {
 	switch val {
 	case "0":
-		fmt.Println("KeepMoving")
+		fmt.Println("Moved")
 	case "1":
 		ParseCombatLog(rawLog)
-	case "2":
-		ParseCooldown(rawLog)
 	case "3":
 		ParseUnequip(rawLog)
 	case "4":
@@ -40,6 +38,16 @@ func CharacterParseOperator(val string, rawLog []byte) {
 		ParseWithdrawBank(rawLog)
 	case "10":
 		ParseWithdrawBankGold(rawLog)
+	case "11":
+		ParseGeBuyItem(rawLog)
+	case "12":
+		ParseGeSellItem(rawLog)
+	case "13":
+		ParseAcceptNewTask(rawLog)
+	case "14":
+		ParseCompleteTask(rawLog)
+	case "15":
+		ParseExchangeTask(rawLog)
 	default:
 		fmt.Println("Some Action Taken")
 	}
@@ -49,6 +57,10 @@ func NoCharacterParseOperator(val string, rawLog []byte) {
 	switch val {
 	case "0":
 		ParseAllMaps(rawLog)
+	case "1":
+		ParseAllCharacterLog(rawLog)
+	case "2":
+		ParseMyCharacters(rawLog)
 	default:
 		fmt.Println("NoCharacterParse log")
 	}
@@ -61,10 +73,11 @@ func ParseCombatLog(rawLog []byte) {
 	}
 	if result.Data.Character.Name == "" {
 		fmt.Println("Can't Attack")
-	}
-	fmt.Println(result.Data.Character.Name)
-	for _, rec := range result.Data.Fight.Logs {
-		fmt.Println(rec)
+	} else {
+		fmt.Println(result.Data.Character.Name)
+		for _, rec := range result.Data.Fight.Logs {
+			fmt.Println(rec)
+		}
 	}
 }
 
@@ -75,23 +88,26 @@ func ParseAllMaps(rawLog []byte) {
 	}
 	if len(result.Data) == 0 {
 		fmt.Println("Can't Get All Map")
-	}
-	for _, rec := range result.Data {
-		fmt.Println(rec)
+	} else {
+		for _, rec := range result.Data {
+			fmt.Println(rec)
+		}
 	}
 }
 
-func ParseCooldown(rawLog []byte) {
+func ParseMyCharacters(rawLog []byte) {
 	var result response.GetMyCharactersResponse
 	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
 	if len(result.Data) == 0 {
 		fmt.Println("Can't Get Characters")
-	}
-	for _, rec := range result.Data {
-		fmt.Println("Cooldown: ", rec.Cooldown)
-		fmt.Println("Cooldown Exp: ", rec.Cooldown_expiration)
+	} else {
+		for _, rec := range result.Data {
+			fmt.Println("Name: ", rec.Name)
+			fmt.Println("Cooldown: ", rec.Cooldown)
+			fmt.Println("Cooldown Exp: ", rec.Cooldown_expiration)
+		}
 	}
 }
 
@@ -99,9 +115,9 @@ func ParseUnequip(rawLog []byte) {
 	var result response.EquipingResponse
 	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
+	} else {
+		fmt.Println("Unequiped")
 	}
-
-	fmt.Println("Unequiped")
 }
 
 func ParseGather(rawLog []byte) {
@@ -111,13 +127,13 @@ func ParseGather(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Gather")
-	}
-
-	fmt.Println(result.Data.Character.Name + " Gathering")
-	fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
-	// Looks like nothing is returned currently
-	for _, rec := range result.Data.Details.Items {
-		fmt.Println("Resource: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	} else {
+		fmt.Println(result.Data.Character.Name + " Gathering")
+		fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
+		// Looks like nothing is returned currently
+		for _, rec := range result.Data.Details.Items {
+			fmt.Println("Resource: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+		}
 	}
 }
 
@@ -128,13 +144,13 @@ func ParseCraft(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Craft")
-	}
-
-	fmt.Println(result.Data.Character.Name + " Crafting")
-	fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
-	// Looks like nothing is returned currently
-	for _, rec := range result.Data.Details.Items {
-		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	} else {
+		fmt.Println(result.Data.Character.Name + " Crafting")
+		fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
+		// Looks like nothing is returned currently
+		for _, rec := range result.Data.Details.Items {
+			fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+		}
 	}
 }
 
@@ -145,11 +161,11 @@ func ParseDepositBank(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Bank Deposit")
-	}
-
-	fmt.Println(result.Data.Character.Name + " Depositing")
-	for _, rec := range result.Data.Bank {
-		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	} else {
+		fmt.Println(result.Data.Character.Name + " Depositing")
+		for _, rec := range result.Data.Bank {
+			fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+		}
 	}
 }
 
@@ -160,10 +176,10 @@ func ParseDepositBankGold(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Bank Deposit")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Depositing")
+		fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
 	}
-
-	fmt.Println(result.Data.Character.Name + " Depositing")
-	fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
 }
 
 func ParseRecyling(rawLog []byte) {
@@ -173,11 +189,11 @@ func ParseRecyling(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Recycle")
-	}
-
-	fmt.Println(result.Data.Character.Name + " Depositing")
-	for _, rec := range result.Data.Details.Items {
-		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	} else {
+		fmt.Println(result.Data.Character.Name + " Depositing")
+		for _, rec := range result.Data.Details.Items {
+			fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+		}
 	}
 }
 
@@ -188,11 +204,11 @@ func ParseWithdrawBank(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Bank Deposit")
-	}
-
-	fmt.Println(result.Data.Character.Name + " Withdrawing")
-	for _, rec := range result.Data.Bank {
-		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	} else {
+		fmt.Println(result.Data.Character.Name + " Withdrawing")
+		for _, rec := range result.Data.Bank {
+			fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+		}
 	}
 }
 
@@ -203,9 +219,105 @@ func ParseWithdrawBankGold(rawLog []byte) {
 	}
 	if result.Data.Cooldown.Reason == "" {
 		fmt.Println("Can't Get Bank Gold Deposit")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Withdrawing Gold")
+		fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
 	}
+}
 
-	fmt.Println(result.Data.Character.Name + " Withdrawing Gold")
-	fmt.Println("Gold: " + strconv.Itoa(result.Data.Bank.Quantity))
-	fmt.Println(result)
+func ParseGeBuyItem(rawLog []byte) {
+	var result response.GeBuyItem
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Buy Item")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Buying Item")
+		fmt.Println("Item: " + result.Data.Transaction.Code + " Quantity: " + strconv.Itoa(result.Data.Transaction.Quantity))
+	}
+}
+
+func ParseGeSellItem(rawLog []byte) {
+	var result response.GeSellItem
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Sell Item")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Selling Item")
+		fmt.Println("Item: " + result.Data.Transaction.Code + " Quantity: " + strconv.Itoa(result.Data.Transaction.Quantity))
+	}
+}
+
+func ParseAcceptNewTask(rawLog []byte) {
+	var result response.AcceptNewTask
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Accept Task")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Accepted Task")
+		fmt.Println("Task: " + result.Data.Task.Code + " Type: " + result.Data.Task.Type)
+	}
+}
+
+func ParseCompleteTask(rawLog []byte) {
+	var result response.CompleteTask
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Accept Task")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Accepted Task")
+		fmt.Println("Reward: " + result.Data.Reward.Code + " Quantity: " + strconv.Itoa(result.Data.Reward.Quantity))
+	}
+}
+
+func ParseExchangeTask(rawLog []byte) {
+	var result response.ExchangeTask
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Exchange Task")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Exchanged Task")
+		fmt.Println("Reward: " + result.Data.Reward.Code + " Quantity: " + strconv.Itoa(result.Data.Reward.Quantity))
+	}
+}
+
+func ParseDeleteItem(rawLog []byte) {
+	var result response.DeleteItem
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Delete Item")
+	} else {
+		fmt.Println(result.Data.Character.Name + " Deleted Item")
+		fmt.Println("Reward: " + result.Data.Item.Code + " Quantity: " + strconv.Itoa(result.Data.Item.Quantity))
+	}
+}
+
+func ParseAllCharacterLog(rawLog []byte) {
+	var result response.AllCharacterLogs
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if len(result.Data) == 0 {
+		fmt.Println("Can't Get Logs")
+	} else {
+		fmt.Println(" -- Logs --")
+		fmt.Println("Total: " + strconv.Itoa(result.Total) + " Page: " + strconv.Itoa(result.Page) + " Size: " + strconv.Itoa(result.Size) + " Pages: " + strconv.Itoa(result.Pages))
+		for _, rec := range result.Data {
+			fmt.Println("")
+			fmt.Println("/////////////////////////////////////")
+			fmt.Println("Character: " + rec.Character + " Account: " + rec.Account + " Type: " + rec.Type + " Description: " + rec.Description)
+			fmt.Println("Content: " + rec.Content + " Cooldown: " + strconv.Itoa(rec.Cooldown) + " Cooldown Exp: " + rec.CooldownExpiration.String() + " Created At: " + rec.CreatedAt.String())
+		}
+	}
 }
