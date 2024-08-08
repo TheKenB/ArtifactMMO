@@ -109,6 +109,35 @@ func DepositBank(char string, key string) {
 	parse.ParseDepositBank(body)
 }
 
+func DepositBankGold(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/bank/deposit/gold"
+	var gold string
+	fmt.Println("Enter gold quantity")
+	_, err := fmt.Scan(&gold)
+	if err != nil {
+		fmt.Println("Bank Deposit Error:", err)
+	}
+	data := `{"quantity":` + gold + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseDepositBankGold(body)
+}
+
+func Recycling(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/recycling"
+	var item string
+	var quantity string
+	fmt.Println("Enter item and quantity")
+	_, err := fmt.Scan(&item, &quantity)
+	if err != nil {
+		fmt.Println("Bank Deposit Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseDepositBank(body)
+}
+
 // Helpers
 func ItemSlot() string {
 	slot := ""

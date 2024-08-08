@@ -168,9 +168,7 @@ type GatherDetailsResponse struct {
 }
 
 type RecycleDetailResponse struct {
-	Details struct {
-		Items []ItemsResponse `json:"items"`
-	} `json:"details"`
+	Items []ItemsResponse `json:"items"`
 }
 
 type TransactionResponse struct {
@@ -289,6 +287,22 @@ type BankDepositResponse struct {
 		Cooldown  CooldownMapResponse   `json:"cooldown"`
 		Item      ItemMapResponse       `json:"item"`
 		Bank      []BankResponse        `json:"bank"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type BankDepositGoldResponse struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Bank      BankGoldResponse      `json:"bank"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type RecyclingResponse struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Details   RecycleDetailResponse `json:"details"`
 		Character JsonCharacterResponse `json:"character"`
 	}
 }

@@ -36,6 +36,7 @@ func CharacterActionMenu() string {
 [4] Gather
 [5] Craft
 [6] Bank Deposit
+[7] Bank Deposit Gold
 ---------------------`
 }
 
@@ -82,6 +83,8 @@ func GetCharacterAction(val string, char string) {
 		api.Crafting(char, val)
 	case "6":
 		api.DepositBank(char, val)
+	case "7":
+		api.DepositBankGold(char, val)
 	default:
 		fmt.Println("No Action")
 	}

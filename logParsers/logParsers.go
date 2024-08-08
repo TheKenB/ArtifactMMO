@@ -144,3 +144,33 @@ func ParseDepositBank(rawLog []byte) {
 		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
 	}
 }
+
+func ParseDepositBankGold(rawLog []byte) {
+	var result response.BankDepositResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Bank Deposit")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Depositing")
+	for _, rec := range result.Data.Bank {
+		fmt.Println("Gold: " + strconv.Itoa(rec.Quantity))
+	}
+}
+
+func ParseRecyling(rawLog []byte) {
+	var result response.RecyclingResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Recycle")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Depositing")
+	for _, rec := range result.Data.Details.Items {
+		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	}
+}
