@@ -28,6 +28,10 @@ func CharacterParseOperator(val string, rawLog []byte) {
 		ParseUnequip(rawLog)
 	case "4":
 		ParseGather(rawLog)
+	case "5":
+		ParseCraft(rawLog)
+	case "6":
+		ParseDepositBank(rawLog)
 	default:
 		fmt.Println("Some Action Taken")
 	}
@@ -122,6 +126,21 @@ func ParseCraft(rawLog []byte) {
 	fmt.Println("Xp: " + strconv.Itoa(result.Data.Details.Xp))
 	// Looks like nothing is returned currently
 	for _, rec := range result.Data.Details.Items {
+		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
+	}
+}
+
+func ParseDepositBank(rawLog []byte) {
+	var result response.BankDepositResponse
+	if err := json.Unmarshal(rawLog, &result); err != nil { // Parse []byte to go struct pointer
+		fmt.Println("Can not unmarshal JSON")
+	}
+	if result.Data.Cooldown.Reason == "" {
+		fmt.Println("Can't Get Bank Deposit")
+	}
+
+	fmt.Println(result.Data.Character.Name + " Depositing")
+	for _, rec := range result.Data.Bank {
 		fmt.Println("Item: " + rec.Code + " Quantity: " + strconv.Itoa(rec.Quantity))
 	}
 }

@@ -21,21 +21,21 @@ type JsonCharacterResponse struct {
 	Mining_xp                 int       `json:"mining_xp"`
 	Mining_max_xp             int       `json:"mining_max_xp"`
 	Woodcutting_level         int       `json:"woodcutting_level"`
-	Woodcutting_xp            int       `JSON:"WOODCUTTING_XP"`
-	Woodcutting_max_xp        int       `JSON:"WOODCUTTING_MAX_XP"`
-	Fishing_level             int       `JSON:"FISHING_LEVEL"`
-	Fishing_xp                int       `JSON:"FISHING_XP"`
-	Fishing_max_xp            int       `JSON:"FISHING_MAX_XP"`
-	Weaponcrafting_level      int       `JSON:"WEAPONCRAFTING_LEVEL"`
-	Weaponcrafting_xp         int       `JSON:"WEAPONCRAFTING_XP"`
-	Weaponcrafting_max_xp     int       `JSON:"WEAPONCRAFTING_MAX_XP"`
-	Gearcrafting_level        int       `JSON:"GEARCRAFTING_LEVEL"`
-	Gearcrafting_xp           int       `JSON:"GEARCRAFTING_XP"`
-	Gearcrafting_max_xp       int       `JSON:"GEARCRAFTING_MAX_XP"`
-	Jewelrycrafting_level     int       `JSON:"JEWELRYCRAFTING_LEVEL"`
-	Jewelrycrafting_xp        int       `JSON:"JEWELRYCRAFTING_XP"`
-	Jewelrycrafting_max_xp    int       `JSON:"JEWELRYCRAFTING_MAX_XP"`
-	Cooking_level             int       `JSON:"COOKING_LEVEL"`
+	Woodcutting_xp            int       `json:"woodcutting_xp"`
+	Woodcutting_max_xp        int       `json:"woodcutting_max_xp"`
+	Fishing_level             int       `json:"fishing_level"`
+	Fishing_xp                int       `json:"fishing_xp"`
+	Fishing_max_xp            int       `json:"fishing_max_xp"`
+	Weaponcrafting_level      int       `json:"weaponcrafting_level"`
+	Weaponcrafting_xp         int       `json:"weaponcrafting_xp"`
+	Weaponcrafting_max_xp     int       `json:"weaponcrafting_max_xp"`
+	Gearcrafting_level        int       `json:"gearcrafting_level"`
+	Gearcrafting_xp           int       `json:"gearcrafting_xp"`
+	Gearcrafting_max_xp       int       `json:"gearcrafting_max_xp"`
+	Jewelrycrafting_level     int       `json:"jewelrycrafting_level"`
+	Jewelrycrafting_xp        int       `json:"jewelrycrafting_xp"`
+	Jewelrycrafting_max_xp    int       `json:"jewelrycrafting_max_xp"`
+	Cooking_level             int       `json:"cooking_level"`
 	Cooking_xp                int       `json:"cooking_xp"`
 	Cooking_max_xp            int       `json:"cooking_max_xp"`
 	Hp                        int       `json:"hp"`
@@ -280,6 +280,15 @@ type CraftResponse struct {
 	Data struct {
 		Cooldown  CooldownMapResponse   `json:"cooldown"`
 		Details   GatherDetailsResponse `json:"details"`
+		Character JsonCharacterResponse `json:"character"`
+	}
+}
+
+type BankDepositResponse struct {
+	Data struct {
+		Cooldown  CooldownMapResponse   `json:"cooldown"`
+		Item      ItemMapResponse       `json:"item"`
+		Bank      []BankResponse        `json:"bank"`
 		Character JsonCharacterResponse `json:"character"`
 	}
 }

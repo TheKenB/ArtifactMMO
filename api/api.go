@@ -91,7 +91,22 @@ func Crafting(char string, key string) {
 	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
 	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
 	body := ExecQuery(resp)
-	fmt.Println(body)
+	parse.ParseOperator(key, body, char)
+}
+
+func DepositBank(char string, key string) {
+	tempUrl := "https://api.artifactsmmo.com/my/" + char + "/action/bank/deposit"
+	var item string
+	var quantity string
+	fmt.Println("Enter item and quantity")
+	_, err := fmt.Scan(&item, &quantity)
+	if err != nil {
+		fmt.Println("Bank Deposit Error:", err)
+	}
+	data := `{"code":` + `"` + item + `"` + `,"quantity":` + quantity + `}`
+	resp := response.ActionResponse{Url: tempUrl, PostGet: "POST", Data: data}
+	body := ExecQuery(resp)
+	parse.ParseDepositBank(body)
 }
 
 // Helpers
