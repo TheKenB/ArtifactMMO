@@ -202,6 +202,11 @@ type AllCharacters struct {
 	}
 }
 
+type Content struct {
+	Type string `json:"type"`
+	Code string `json:"code"`
+}
+
 // Api Responses
 
 type CombatResponse struct {
@@ -238,14 +243,11 @@ type CombatResponse struct {
 
 type AllMapsResponse struct {
 	Data []struct {
-		Name    string `json:"name"`
-		Skin    string `json:"skin"`
-		X       int    `json:"x"`
-		Y       int    `json:"y"`
-		Content struct {
-			Type string `json:"type"`
-			Code string `json:"code"`
-		} `json:"content"`
+		Name    string  `json:"name"`
+		Skin    string  `json:"skin"`
+		X       int     `json:"x"`
+		Y       int     `json:"y"`
+		Content Content `json:"content"`
 	} `json:"data"`
 	Total int `json:"total"`
 	Page  int `json:"page"`
@@ -372,6 +374,14 @@ type DeleteItem struct {
 	}
 }
 
+type Map struct {
+	Name    string  `json:"Name"`
+	Skin    string  `json:"Skin"`
+	X       int     `json:"x"`
+	Y       int     `json:"Y"`
+	Content Content `json:"content"`
+}
+
 type AllCharacterLogs struct {
 	Data []struct {
 		Character          string    `json:"character"`
@@ -404,4 +414,12 @@ type GetBankGold struct {
 	Data struct {
 		Quantity string `json:"quantity"`
 	}
+}
+
+type GetCharacter struct {
+	Data JsonCharacterResponse `json:"character"`
+}
+
+type GetMap struct {
+	Data Map `json:"data"`
 }

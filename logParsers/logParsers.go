@@ -61,6 +61,14 @@ func NoCharacterParseOperator(val string, rawLog []byte) {
 		ParseAllCharacterLog(rawLog)
 	case "2":
 		ParseMyCharacters(rawLog)
+	case "3":
+		ParseGetBankItems(rawLog)
+	case "4":
+		ParseGetBankGold(rawLog)
+	case "5":
+		ParseGetCharacter(rawLog)
+	case "6":
+		ParseGetMap(rawLog)
 	default:
 		fmt.Println("NoCharacterParse log")
 	}
@@ -345,5 +353,23 @@ func ParseGetBankGold(rawLog []byte) {
 		fmt.Println("Can't get gold from bank")
 	} else {
 		fmt.Println("Withdrawed: " + result.Data.Quantity)
+	}
+}
+
+func ParseGetCharacter(rawLog []byte) {
+	var result response.GetCharacter
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	} else {
+		fmt.Println("Name: " + result.Data.Name + " Level: " + strconv.Itoa(result.Data.Level) + " Xp: " + strconv.Itoa(+result.Data.Xp))
+	}
+}
+
+func ParseGetMap(rawLog []byte) {
+	var result response.GetMap
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	} else {
+		fmt.Println("Name: " + result.Data.Skin + "  X: " + strconv.Itoa(result.Data.X) + " Y: " + strconv.Itoa(+result.Data.Y) + " Info: " + result.Data.Content.Code)
 	}
 }

@@ -275,6 +275,37 @@ func GetBankGold(key string) {
 	parse.ParseOperator(key, body, "None")
 }
 
+func GetCharacter(key string) {
+	var name string
+	fmt.Println("Enter character name")
+	_, err := fmt.Scan(&name)
+	if err != nil {
+		fmt.Println("Can't find character")
+	} else {
+		var tempUrl string = "https://api.artifactsmmo.com/characters/" + name
+		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: ""}
+		body := ExecQuery(resp)
+		fmt.Println("Parsing")
+		parse.ParseOperator(key, body, "None")
+	}
+}
+
+func GetMap(key string) {
+	var x string
+	var y string
+	fmt.Println("Enter x y for map tile")
+	_, err := fmt.Scan(&x, &y)
+	if err != nil {
+		fmt.Println("Can't find tile")
+	} else {
+		tempUrl := "https://api.artifactsmmo.com/maps/" + x + "/" + y
+		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: ""}
+		body := ExecQuery(resp)
+		fmt.Println("Parsing")
+		parse.ParseOperator(key, body, "None")
+	}
+}
+
 // Helpers
 func ItemSlot() string {
 	slot := ""
