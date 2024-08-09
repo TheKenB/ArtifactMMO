@@ -69,6 +69,10 @@ func NoCharacterParseOperator(val string, rawLog []byte) {
 		ParseGetCharacter(rawLog)
 	case "6":
 		ParseGetMap(rawLog)
+	case "7":
+		ParseGetAllItems(rawLog)
+	case "8":
+		ParseGetItem(rawLog)
 	default:
 		fmt.Println("NoCharacterParse log")
 	}
@@ -371,5 +375,26 @@ func ParseGetMap(rawLog []byte) {
 		fmt.Println("Can't unmarshal JSON")
 	} else {
 		fmt.Println("Name: " + result.Data.Skin + "  X: " + strconv.Itoa(result.Data.X) + " Y: " + strconv.Itoa(+result.Data.Y) + " Info: " + result.Data.Content.Code)
+	}
+}
+
+func ParseGetAllItems(rawLog []byte) {
+	var result response.GetAllItems
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	} else {
+		for _, rec := range result.Data {
+			fmt.Println("Name: " + rec.Name + " Type:" + rec.Type + " CraftSkill:" + rec.Craft.Skill)
+		}
+	}
+}
+
+func ParseGetItem(rawLog []byte) {
+	var result response.GetItem
+	fmt.Println(result)
+	if err := json.Unmarshal(rawLog, &result); err != nil {
+		fmt.Println("Can't unmarshal JSON")
+	} else {
+		fmt.Println("Name: " + result.Data.Name + " Type:" + result.Data.Type + " CraftSkill:" + result.Data.Craft.Skill)
 	}
 }

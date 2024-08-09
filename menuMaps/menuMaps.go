@@ -58,6 +58,8 @@ func NoCharacterActionMenu() string {
 [4] Get Bank Gold
 [5] Get Character
 [6] Get Map Tile
+[7] Get All Item
+[8] Get Item
 ---------------------`
 }
 
@@ -136,6 +138,10 @@ func GetNoCharacterAction(val string, char string) {
 		api.GetCharacter(val)
 	case "6":
 		api.GetMap(val)
+	case "7":
+		api.GetAllItems(val)
+	case "8":
+		api.GetItem(val)
 	default:
 		fmt.Println("No Actin")
 	}

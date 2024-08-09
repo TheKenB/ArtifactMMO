@@ -59,7 +59,7 @@ type JsonCharacterResponse struct {
 	Cooldown                  int       `json:"cooldown"`
 	Cooldown_expiration       time.Time `json:"cooldown_expiration"`
 	Weapon_slot               string    `json:"weapon_slot"`
-	Shield_slot               string    `jsong:"shield_slot"`
+	Shield_slot               string    `json:"shield_slot"`
 	Helmet_slot               string    `json:"helmet_slot"`
 	Body_armor_slot           string    `json:"body_armor_slot"`
 	Leg_armor_slot            string    `json:"leg_armor_slot"`
@@ -90,7 +90,7 @@ type CooldownMapResponse struct {
 	Total_seconds     float32   `json:"total_seconds"`
 	Remaining_seconds float32   `json:"remaining_seconds"`
 	StartedAt         time.Time `json:"started_at"`
-	Expiration        time.Time `jsong:"experation"`
+	Expiration        time.Time `json:"experation"`
 	Reason            string    `json:"reason"`
 }
 type EffectsResponse struct {
@@ -422,4 +422,12 @@ type GetCharacter struct {
 
 type GetMap struct {
 	Data Map `json:"data"`
+}
+
+type GetAllItems struct {
+	Data []ItemMapResponse `json:"data"`
+}
+
+type GetItem struct {
+	Data ItemMapResponse `json:"data"`
 }

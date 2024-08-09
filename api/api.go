@@ -301,7 +301,60 @@ func GetMap(key string) {
 		tempUrl := "https://api.artifactsmmo.com/maps/" + x + "/" + y
 		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: ""}
 		body := ExecQuery(resp)
-		fmt.Println("Parsing")
+		parse.ParseOperator(key, body, "None")
+	}
+}
+
+// Not tested
+func GetAllItems(key string) {
+	var craft_material string
+	var craftSkill string
+	var maxLevel string
+	var minLevel string
+
+	fmt.Println("Enter craftMaterial craftSkill maxLevel minLevel")
+	_, err := fmt.Scan(&craft_material, &craftSkill, &maxLevel, &minLevel)
+	if err != nil {
+		fmt.Println("Can't get items")
+	} else {
+
+		tempUrl := "https://api.artifactsmmo.com/items/?craft_skill=" + craftSkill
+		data := `{"craft_material":` + `"` + craft_material + `"` + `,"max_level":` + maxLevel + `"` + `,"min_level":` + minLevel + `}`
+		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: data}
+		body := ExecQuery(resp)
+		parse.ParseOperator(key, body, "None")
+	}
+}
+
+// Hasn't Been Tested
+func GetItem(key string) {
+	var code string
+	fmt.Println("Enter itemName")
+	_, err := fmt.Scan(&code)
+	if err != nil {
+		fmt.Println("Can't get item")
+	} else {
+		tempUrl := "https://api.artifactsmmo.com/items/" + code
+		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: ""}
+		body := ExecQuery(resp)
+		parse.ParseOperator(key, body, "None")
+	}
+}
+
+func GetAllMonsters(key string) {
+	var drop string
+	var maxLevel string
+	var minLevel string
+	var page string
+	fmt.Println("Enter drop, max_level, min_level, page")
+	_, err := fmt.Scan(&drop, &maxLevel, &minLevel, &page)
+	if err != nil {
+		fmt.Println("Can't getmonsters")
+	} else {
+		tempUrl := "https://api.artifactsmmo.com/monsters/"
+		data := `{"drop":` + `"` + drop + `"` + `,"max_level":` + maxLevel + `"` + `,"min_level":` + minLevel + `,"page":` + page + `}`
+		resp := response.ActionResponse{Url: tempUrl, PostGet: "GET", Data: data}
+		body := ExecQuery(resp)
 		parse.ParseOperator(key, body, "None")
 	}
 }
